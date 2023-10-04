@@ -1,0 +1,8 @@
+{
+  "name": "cdk-examples",
+  "private": true,
+  "workspaces": [
+    "*/"
+  ]
+}
+

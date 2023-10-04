@@ -1,5 +1,5 @@
 {
-  "name": "@amazon/api-gateway-parallel-step-functions",
+  "name": "api-gateway-parallel-step-functions",
   "version": "0.1.0",
   "description": "Integrate API Gateway REST API with a Synchrounous Express State Machine",
   "private": true,

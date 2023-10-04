@@ -1,5 +1,5 @@
 {
-  "name": "ec2-ssm-local-zone",
+  "name": "inspect2",
   "version": "0.1.0",
   "bin": {
     "ec2-ssm-local-zone": "ts-node bin/main.ts"
