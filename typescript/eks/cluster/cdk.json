@@ -1,3 +1,7 @@
 {
+<<<<<<< HEAD
     "app": "npx ts-node index.ts"
+=======
+    "app": "npx ts-node --prefer-ts-exts index"
+>>>>>>> 8562984 (Fix: cdk.json app)
 }

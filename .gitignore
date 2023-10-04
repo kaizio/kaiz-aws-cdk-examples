@@ -373,6 +373,9 @@ $RECYCLE.BIN/
 
 # End of https://www.gitignore.io/api/osx,linux,python,windows,pycharm,visualstudiocode,node
 
+# Bun Lock files
+bun.lockb
+
 ### CDK-specific ignores ###
 *.swp
 cdk.context.json
@@ -380,3 +383,4 @@ package-lock.json
 yarn.lock
 .cdk.staging
 cdk.out
+
