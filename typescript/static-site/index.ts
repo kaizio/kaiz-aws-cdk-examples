@@ -36,7 +36,7 @@ new MyStaticSiteStack(app, 'MyStaticSite', {
      * @see https://docs.aws.amazon.com/cdk/latest/guide/environments.html
      */
     env: {
-        account: app.node.tryGetContext('accountId'),
+        account: app.node.tryGetContext('accountId') ?? '123456789012',
         /**
          * Stack must be in us-east-1, because the ACM certificate for a
          * global CloudFront distribution must be requested in us-east-1.

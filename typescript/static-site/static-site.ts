@@ -26,8 +26,11 @@ export class StaticSite extends Construct {
   constructor(parent: Stack, name: string, props: StaticSiteProps) {
     super(parent, name);
 
-    const zone = route53.HostedZone.fromLookup(this, 'Zone', { domainName: props.domainName });
-    const siteDomain = props.siteSubDomain + '.' + props.domainName;
+    const domainName = props.domainName ?? 'example.com';
+    const siteSubDomain = props.siteSubDomain ?? 'sub';
+
+    const zone = route53.HostedZone.fromLookup(this, 'Zone', { domainName: domainName });
+    const siteDomain = siteSubDomain + '.' + domainName;
     const cloudfrontOAI = new cloudfront.OriginAccessIdentity(this, 'cloudfront-OAI', {
       comment: `OAI for ${name}`
     });
