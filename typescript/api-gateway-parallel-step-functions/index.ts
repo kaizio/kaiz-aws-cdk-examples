@@ -77,7 +77,7 @@ export class ApiGatewayParallelStepFunctionsStack extends cdk.Stack {
       this,
       'my-state-machine',
       {
-        definition: parallel,
+        definitionBody: stepFunctions.DefinitionBody.fromChainable(parallel),
         stateMachineType: stepFunctions.StateMachineType.EXPRESS,
         logs: {
           destination: stfLogGroup,
