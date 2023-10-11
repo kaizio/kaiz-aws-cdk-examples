@@ -63,7 +63,7 @@ export class SecretsManagerCustomRotationStack extends Stack {
     });
 
     Tags.of(elasticacheVpcEndpoint).add('Name', 'elasticache')
-    
+
     const ecSubnetGroup = new elasticache.CfnSubnetGroup(
       this,
       "ElastiCacheSubnetGroup",
@@ -165,6 +165,9 @@ export class SecretsManagerCustomRotationStack extends Stack {
       ],
       description: "A layer that contains the redis-py module",
       license: "MIT License",
+      bundling: {
+        user: '1000:1000'
+      },
     });
 
     const fn = new pyLambda.PythonFunction(this, "SecretRotationFunction", {
@@ -185,6 +188,9 @@ export class SecretsManagerCustomRotationStack extends Stack {
         EXCLUDE_CHARACTERS: "@%*()_+=`~{}|[]\\:\";'?,./",
         SECRETS_MANAGER_ENDPOINT:
           "https://secretsmanager." + Stack.of(this).region + ".amazonaws.com",
+      },
+      bundling: {
+        user: '1000:1000'
       },
     });
 
