@@ -1,7 +1,7 @@
 # Download files from aws
 otherpackagesjson=$(curl -sL https://raw.githubusercontent.com/aws/aws-cdk/main/packages/aws-cdk/lib/init-templates/app/typescript/package.json)
-cdkversionjson=$(curl -sL -o cdk-version.json https://raw.githubusercontent.com/aws/aws-cdk/main/version.v2.json)
-constructsjson=$(curl -sL -o constructs.json https://raw.githubusercontent.com/aws/aws-cdk/main/packages/aws-cdk/package.json)
+cdkversionjson=$(curl -sL https://raw.githubusercontent.com/aws/aws-cdk/main/version.v2.json)
+constructsjson=$(curl -sL https://raw.githubusercontent.com/aws/aws-cdk/main/packages/aws-cdk/package.json)
 
 # Find all the package.json files in the typescript/ directory
 files=$(find ../typescript/ -iname package.json -not -path "*/node_modules/*")
