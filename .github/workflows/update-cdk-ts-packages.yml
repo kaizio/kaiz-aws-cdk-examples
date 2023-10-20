@@ -1,0 +1,29 @@
+name: Update package.json for CDK Typescript
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+jobs:
+  main:
+    # this workflow will always fail in forks; bail if this isn't running in the upstream
+    if: github.repository == 'kaizio/kaiz-aws-cdk-examples'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update package.json for CDK TS apps
+        run: |
+          echo "Updating CDK Typscript package.jsons"
+          scripts/update-cdk-ts-packages.sh
+      - name: Create a PR
+        uses: peter-evans/create-pull-request@v5
+        with:
+          # Git commit details
+          branch: automation/update-contributors
+          author: aws-cdk-automation <aws-cdk-automation@users.noreply.github.com>
+          commit-message: 'chore: update cdk typescript package.json versions'
+          # Pull Request details
+          title: 'chore: update cdk typescript package.json versions'
+          labels: auto-approve
+          # Github prevents further Github actions to be run if the default Github token is used.
+          # Instead use a privileged token here, so further GH actions can be triggered on this PR.
+          token: ${{ secrets.PROJEN_GITHUB_TOKEN }}
