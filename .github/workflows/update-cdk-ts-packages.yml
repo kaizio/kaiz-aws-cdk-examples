@@ -18,7 +18,7 @@ jobs:
         uses: peter-evans/create-pull-request@v5
         with:
           # Git commit details
-          branch: automation/update-contributors
+          branch: automation-typescript/update-packages
           author: aws-cdk-automation <aws-cdk-automation@users.noreply.github.com>
           commit-message: 'chore: update cdk typescript package.json versions'
           # Pull Request details
@@ -26,4 +26,4 @@ jobs:
           labels: auto-approve
           # Github prevents further Github actions to be run if the default Github token is used.
           # Instead use a privileged token here, so further GH actions can be triggered on this PR.
-          token: ${{ secrets.PROJEN_GITHUB_TOKEN }}
+          token: ${{ secrets.CDK_GITHUB_TOKEN }}

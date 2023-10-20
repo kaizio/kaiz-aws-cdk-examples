@@ -4,7 +4,7 @@ cdkversionjson=$(curl -sL https://raw.githubusercontent.com/aws/aws-cdk/main/ver
 constructsjson=$(curl -sL https://raw.githubusercontent.com/aws/aws-cdk/main/packages/aws-cdk/package.json)
 
 # Find all the package.json files in the typescript/ directory
-files=$(find ../typescript/ -iname package.json -not -path "*/node_modules/*")
+files=$(find ./typescript/ -iname package.json -not -path "*/node_modules/*")
 
 # Get current @types/jest and update all package.json files
 typejest=$(echo $otherpackagesjson | jq -r '.devDependencies."@types/jest"')
