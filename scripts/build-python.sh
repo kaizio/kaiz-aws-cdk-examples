@@ -1,33 +1,52 @@
 #!/bin/bash
-set -euxo pipefail
-scriptdir=$(cd $(dirname $0) && pwd)
-
+set -euo pipefail
+scriptdir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
+# Export scriptdir for use in parallel
+export scriptdir
 
 # install CDK CLI from npm, so that npx can find it later
 cd $scriptdir/../python
 npm install
 
-# Find and build all Python projects
-for requirements in $(find $scriptdir/../python -name requirements.txt  -not -path "$scriptdir/../python/node_modules/*"); do
-    (
-        echo "::group::$requirements"
-        echo "=============================="
-        echo "building project: $requirements"
-        echo "=============================="
+# Find all Python projects
+projects=$(find "$scriptdir/../python" -name requirements.txt -not -path "$scriptdir/../python/node_modules/*" -print0 | xargs -0 -n1 dirname | sort -u)
 
-        cd $(dirname $requirements)
-        echo "$(tput bold)Building project at $(dirname $requirements)$(tput sgr0)"
-        [[ ! -f DO_NOT_AUTOTEST ]] || exit 0
+build_project() {
+    local project_dir="$1"
 
-        python3 -m venv /tmp/.venv
+    echo "::group::$project_dir"
+    echo "=============================="
+    echo "Building project: $project_dir"
+    echo "=============================="
 
-        source /tmp/.venv/bin/activate
-        pip install -r requirements.txt
+    cd "$project_dir" || exit
 
-        $scriptdir/synth.sh
-        # It is critical that we clean up the pip venv before we build the next python project
-        # Otherwise, if anything gets pinned in a requirements.txt, you end up with a weird broken environment
-        rm -rf /tmp/.venv
+    if [[ -f DO_NOT_AUTOTEST ]]; then
+        echo "Skipping project due to DO_NOT_AUTOTEST flag"
         echo "::endgroup::"
-    )
-done
+        return 0
+    fi
+
+    echo "$(tput bold)Building project at $(pwd)$(tput sgr0)"
+
+    python3 -m venv "/tmp/.venv-$(basename "$project_dir")"
+    source "/tmp/.venv-$(basename "$project_dir")/bin/activate"
+    pip install -r "requirements.txt"
+
+    if ! "$scriptdir/synth.sh"; then
+        echo "::error::synth.sh failed for project $project_dir"
+        deactivate
+        rm -rf "/tmp/.venv-$(basename "$project_dir")"
+        echo "::endgroup::"
+        return 1
+    fi
+
+    deactivate
+    rm -rf "/tmp/.venv-$(basename "$project_dir")"
+    echo "::endgroup::"
+}
+
+export -f build_project
+
+# Build projects in parallel
+parallel --keep-order --halt-on-error 1 build_project ::: "$projects"
