@@ -73,10 +73,10 @@ jobs:
           # Create an array to store directories to be built
           dirs_to_build=()
 
+          files=(${{ steps.changed-files.outputs.all_modified_files }})
+
           # Check the directories of each changed file for cdk.json
-          for file in ${{ steps.changed-files.outputs.all_modified_files }}; do
-            # Remove Null bytes from the file path
-            file=$(printf "%s" "$file")
+          for file in "${files[@]}"; do
             IFS="/" read -ra path_parts <<< "$file"
             language=${path_parts[0]}
             dir="${path_parts[0]}/${path_parts[1]}"
