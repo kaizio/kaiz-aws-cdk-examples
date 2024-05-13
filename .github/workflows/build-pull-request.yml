@@ -50,6 +50,7 @@ jobs:
           
           # Function to build a single file
           build_file() {
+            echo "Build File $1"
             local file="$1"
             IFS="/" read -ra path_parts <<< "$file"
             language=${path_parts[0]}
