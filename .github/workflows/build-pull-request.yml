@@ -86,7 +86,7 @@ jobs:
               continue
             fi
 
-            #dirs_to_build+=("$(find "$dir" -name 'cdk.json' -print0)")
+            dirs_to_build+=("$(find "$dir" -name 'cdk.json')")
           done
 
           # Remove duplicate directories
