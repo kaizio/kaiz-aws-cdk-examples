@@ -13,7 +13,7 @@ cd $scriptdir/../python
 npm install
 
 # Find all Python projects
-projects=$(find "$scriptdir/../python/$2" -name requirements.txt -not -path "$scriptdir/../python/node_modules/*" -print0 | xargs -0 -n1 dirname | sort -u)
+projects=$(find "$scriptdir/../python/$1" -name requirements.txt -not -path "$scriptdir/../python/node_modules/*" -print0 | xargs -0 -n1 dirname | sort -u)
 
 build_project() {
     local project_dir="$1"
