@@ -13,12 +13,12 @@ jobs:
   build:
     # Run the job on the latest Ubuntu runner
     runs-on: ubuntu-latest
-    
+
     # Define a matrix strategy to run the job for multiple languages
     strategy:
       matrix:
         language: ['csharp', 'go', 'python', 'java', 'typescript']
-        
+
     steps:
       # Checkout the code from the repository
       - name: Checkout code
@@ -44,47 +44,47 @@ jobs:
         run: |
           # Group the build output for better readability
           echo "::group::Build changes for ${{ matrix.language }}"
-          
+
           # Start the build summary for the current language
           echo "# Build summary for ${{ matrix.language }}" >> $GITHUB_STEP_SUMMARY
-          
+
           # Function to build a single file
           build_file() {
             echo "Build File $1"
             local file="$1"
             IFS="/" read -ra path_parts <<< "$file"
             language=${path_parts[0]}
-            
+
             # Skip files that don't belong to the current language
             if [[ $language != ${{ matrix.language }} ]]; then
               return 0
             fi
-            
+
             echo "Build Path $file"
-            
+
             # Clean the working directory
             git clean -dfx
-            
+
             # Run the build script for the current language, passing the project directory and extra path
             if ../scripts/build-${language}.sh "$file"; then
-              echo "- :o: $project_dir" >> $GITHUB_STEP_SUMMARY
+              echo "- :o: $file" >> $GITHUB_STEP_SUMMARY
             else
-              echo "- :x: $project_dir" >> $GITHUB_STEP_SUMMARY
+              echo "- :x: $file" >> $GITHUB_STEP_SUMMARY
               return 1
             fi
           }
-          
+
           # Export the build_file function for use in parallel
           export -f build_file
-          
+
           # Create an array to store directories to be built
           dirs_to_build=()
-          
+
           # Check the directories of each changed file for cdk.json
           for file in ${{ steps.changed-files.outputs.all_modified_files }}; do
             IFS="/" read -ra path_parts <<< "$file"
             language=${path_parts[0]}
-            
+
             # Skip files that don't belong to the current language
             if [[ $language != ${{ matrix.language }} ]]; then
               continue
@@ -92,10 +92,10 @@ jobs:
 
             dirs_to_build+=("$(find ${path_parts[0]}/${path_parts[1]} -name 'cdk.json' -print0)")
           done
-          
+
           # Remove duplicate directories
           dirs_to_build=($(printf "%s\n" "${dirs_to_build[@]}" | sort -u))
-          
+
           # Print the directories to be built
           echo "Directories to build:"
           for dir in "${dirs_to_build[@]}"; do
@@ -105,10 +105,10 @@ jobs:
           # install CDK CLI from npm, so that npx can find it later
           cd ./${{ matrix.language }}
           npm install
-          
+
           # Run the build_file function in parallel for each directory to be built
           # Halt the execution if any of the build_file invocations fail
           parallel --halt-on-error 2 build_file ::: "${dirs_to_build[@]}"
-          
+
           # End the grouped build output
           echo "::endgroup::"
