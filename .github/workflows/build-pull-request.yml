@@ -101,7 +101,7 @@ jobs:
           done
 
           # install CDK CLI from npm, so that npx can find it later
-          cd $scriptdir/../csharp
+          cd $scriptdir/../${{ matrix.language }}
           npm install
           
           # Run the build_file function in parallel for each directory to be built
