@@ -3,13 +3,13 @@ set -euxo pipefail
 scriptdir=$(cd $(dirname $0) && pwd)
 projFile=$1
 
-echo "::group::$requirements"
+echo "::group::$projFile"
 echo "=============================="
-echo "building project: $requirements"
+echo "building project: $projFile"
 echo "=============================="
 
-cd $(dirname $requirements)
-echo "$(tput bold)Building project at $(dirname $requirements)$(tput sgr0)"
+cd $scriptdir/../$(dirname $projFile)
+echo "$(tput bold)Building project at $(dirname $projFile)$(tput sgr0)"
 [[ ! -f DO_NOT_AUTOTEST ]] || exit 0
 
 python3 -m venv /tmp/.venv

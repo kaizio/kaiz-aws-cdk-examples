@@ -12,7 +12,7 @@ echo "=============================="
 echo "running build for typescript/${projFile}"
 echo "=============================="
 
-cd $projFile
+cd $scriptdir/../$(dirname $projFile)
 if [ -f DO_NOT_AUTOTEST ]; then 
   echo "found DO_NOT_AUTOTEST, skip it."
   return

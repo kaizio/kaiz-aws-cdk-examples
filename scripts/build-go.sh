@@ -7,7 +7,7 @@ echo "=============================="
 echo "building project: $projFile"
 echo "=============================="
 
-cd $(dirname $projFile)
+cd $scriptdir/../$(dirname $projFile)
 if [[ -f DO_NOT_AUTOTEST ]]; then exit 0; fi
 
 go get -d -t && go build
