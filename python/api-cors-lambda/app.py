@@ -11,7 +11,7 @@ class ApiCorsLambdaStack(Stack):
     def __init__(self, scope: Construct, id: str, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
 
-        base_lambda = _lambda.Function(self, 'ApiCorsLambda',
+        base_lambda = _lambda.Function(self, 'ApiCorsLambda1',
                                        handler='lambda-handler.handler',
                                        runtime=_lambda.Runtime.PYTHON_3_7,
                                        code=_lambda.Code.from_asset('lambda'))

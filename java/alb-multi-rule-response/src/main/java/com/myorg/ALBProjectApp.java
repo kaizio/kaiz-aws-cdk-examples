@@ -9,7 +9,7 @@ public class ALBProjectApp {
     App app = new App();
 
     new ALBProjectStack(
-        app, "ALBProjectStack", StackProps.builder().env(Environment.builder().build()).build());
+        app, "ALBProjectStack1", StackProps.builder().env(Environment.builder().build()).build());
     app.synth();
   }
 }
