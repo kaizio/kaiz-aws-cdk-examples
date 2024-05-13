@@ -87,8 +87,17 @@ jobs:
             if [[ $language != ${{ matrix.language }} ]]; then
               continue
             fi
-            
-            dirs_to_build=$(find ./${path_parts[0]}/${path_parts[1]} -name 'cdk.json' -print0 | xargs -0 -I{} dirname {} | sort -u)
+
+            dirs_to_build+=("$(find ./${path_parts[0]}/${path_parts[1]} -name 'cdk.json' -print0")
+          done
+          
+          # Remove duplicate directories
+          dirs_to_build=($(printf "%s\n" "${dirs_to_build[@]}" | sort -u))
+          
+          # Print the directories to be built
+          echo "Directories to build:"
+          for dir in "${dirs_to_build[@]}"; do
+            echo "- $dir"
           done
 
           # install CDK CLI from npm, so that npx can find it later
