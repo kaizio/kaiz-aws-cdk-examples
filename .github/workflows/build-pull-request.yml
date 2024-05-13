@@ -42,9 +42,6 @@ jobs:
       - name: Build changed files
         if: steps.changed-files.outputs.any_changed == 'true'
         run: |
-          # Start the build summary for the current language
-          echo "# Build summary for ${{ matrix.language }}" >> $GITHUB_STEP_SUMMARY
-
           # Function to build a single file
           build_file() {
             echo "Build File $1"
@@ -65,10 +62,8 @@ jobs:
             # Run the build script for the current language, passing the project directory and extra path
             echo "::group::$file"
             if ../scripts/build-${language}.sh "$file"; then
-              echo "- :o: $file" >> $GITHUB_STEP_SUMMARY
               echo "::endgroup::"
             else
-              echo "- :x: $file" >> $GITHUB_STEP_SUMMARY
               echo "::endgroup::"
               echo "::error::Build failed for $file"
               return 1
