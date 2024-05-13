@@ -4,12 +4,16 @@ scriptdir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 # Export scriptdir for use in parallel
 export scriptdir
 
+# Check for required arguments
+# $1: Path to the project
+# $2: Rest of path after project path
+
 # install CDK CLI from npm, so that npx can find it later
 cd $scriptdir/../python
 npm install
 
 # Find all Python projects
-projects=$(find "$scriptdir/../python" -name requirements.txt -not -path "$scriptdir/../python/node_modules/*" -print0 | xargs -0 -n1 dirname | sort -u)
+projects=$(find "$scriptdir/../python/$2" -name requirements.txt -not -path "$scriptdir/../python/node_modules/*" -print0 | xargs -0 -n1 dirname | sort -u)
 
 build_project() {
     local project_dir="$1"
