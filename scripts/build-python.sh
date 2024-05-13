@@ -3,7 +3,6 @@ set -euxo pipefail
 scriptdir=$(cd $(dirname $0) && pwd)
 projFile=$1
 
-echo "::group::$projFile"
 echo "=============================="
 echo "building project: $projFile"
 echo "=============================="
@@ -20,4 +19,3 @@ $scriptdir/synth.sh
 # It is critical that we clean up the pip venv before we build the next python project
 # Otherwise, if anything gets pinned in a requirements.txt, you end up with a weird broken environment
 rm -rf .venv
-echo "::endgroup::"

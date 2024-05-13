@@ -42,9 +42,6 @@ jobs:
       - name: Build changed files
         if: steps.changed-files.outputs.any_changed == 'true'
         run: |
-          # Group the build output for better readability
-          echo "::group::Build changes for ${{ matrix.language }}"
-
           # Start the build summary for the current language
           echo "# Build summary for ${{ matrix.language }}" >> $GITHUB_STEP_SUMMARY
 
@@ -66,10 +63,14 @@ jobs:
             git clean -dfx
 
             # Run the build script for the current language, passing the project directory and extra path
+            echo "::group::$projFile"
             if ../scripts/build-${language}.sh "$file"; then
               echo "- :o: $file" >> $GITHUB_STEP_SUMMARY
+              echo "::endgroup::"
             else
               echo "- :x: $file" >> $GITHUB_STEP_SUMMARY
+              echo "::error::Build failed for $file"
+              echo "::endgroup::"
               return 1
             fi
           }
@@ -109,6 +110,3 @@ jobs:
           # Run the build_file function in parallel for each directory to be built
           # Halt the execution if any of the build_file invocations fail
           parallel --halt-on-error 2 build_file ::: "${dirs_to_build[@]}"
-
-          # End the grouped build output
-          echo "::endgroup::"

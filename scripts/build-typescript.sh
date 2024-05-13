@@ -8,7 +8,6 @@ set -euxo pipefail
 scriptdir=$(cd $(dirname $0) && pwd)
 projFile=$1
 
-echo "::group::$projFile"
 echo "=============================="
 echo "running build for typescript/${projFile}"
 echo "=============================="
@@ -40,4 +39,3 @@ else
 fi
 # try cdk synth
 $scriptdir/synth.sh
-echo "::endgroup::"
