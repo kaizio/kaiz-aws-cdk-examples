@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v4
         
       - name: Setup Language Environment
-        uses: ./.github/actions/setup-language-env
+        uses: ./.github/actions/setup-language-env/actions.yml
         with:
           language: ${{ matrix.language }}
           
