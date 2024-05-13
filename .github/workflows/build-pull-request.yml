@@ -33,7 +33,7 @@ jobs:
       - name: Build changed files
         if: steps.changed-files.outputs.any_changed == 'true'
         run: |
-          echo "::group::Build changes for ${{ matrix.language }}"
+          echo "::group::Build changes for lang ${{ matrix.language }}"
           echo ""
           
           changed_files=(${{ steps.changed-files.outputs.all_modified_files }})
@@ -50,19 +50,19 @@ jobs:
             fi
             processed_paths[$combined_path]=1
             
-            echo "$combined_path" >> changed_paths.txt
+            echo "$file" >> changed_paths.txt
           done
           
           parallel --keep-order --halt-on-error 1 ' 
             combined_path="{}"
             
             # Extract path1, path2, and remaining from the combined path
-            IFS="/" read path1 path2 remaining <<< "$combined_path"
+            IFS="/" read path1 path2 remaining <<< "$1"
             
             echo "Build Path ${combined_path}"
             
             git clean -dfx
-            scripts/build-${{ matrix.language }}.sh "$dir_path" "$remaining_path"
+            scripts/build-${{ matrix.language }}.sh "$path2" "$remaining"
             
             if [[ $? == 0 ]]; then
               echo "- :o: $combined_path"
