@@ -53,7 +53,7 @@ jobs:
             echo "$combined_path" >> changed_paths.txt
           done
           
-          parallel --halt-on-error 1 '
+          parallel --halt-on-error 1 ' 
             combined_path="{}"
             
             # Extract the directory path from the combined path
@@ -71,7 +71,13 @@ jobs:
               echo "- :o: $combined_path"
             else
               echo "- :x: $combined_path"
+              return 1
             fi
           ' :::: changed_paths.txt
+          
+          if [[ $? != 0 ]]; then
+            echo "::error::One or more builds failed"
+            exit 1
+          fi
           
           echo "::endgroup::"
