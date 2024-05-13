@@ -63,14 +63,14 @@ jobs:
             git clean -dfx
 
             # Run the build script for the current language, passing the project directory and extra path
-            echo "::group::$projFile"
+            echo "::group::$file"
             if ../scripts/build-${language}.sh "$file"; then
               echo "- :o: $file" >> $GITHUB_STEP_SUMMARY
               echo "::endgroup::"
             else
               echo "- :x: $file" >> $GITHUB_STEP_SUMMARY
-              echo "::error::Build failed for $file"
               echo "::endgroup::"
+              echo "::error::Build failed for $file"
               return 1
             fi
           }
