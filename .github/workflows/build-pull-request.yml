@@ -75,15 +75,16 @@ jobs:
 
           # Check the directories of each changed file for cdk.json
           for file in ${{ steps.changed-files.outputs.all_modified_files }}; do
-            IFS="/" read -ra path_parts <<< "${file//\//$'\n'}"
+            IFS="/" read -ra path_parts <<< "$file"
             language=${path_parts[0]}
+            dir="./${path_parts[0]}/${path_parts[1]}"
 
             # Skip files that don't belong to the current language
             if [[ $language != ${{ matrix.language }} ]]; then
               continue
             fi
 
-            dirs_to_build+=("$(find ${path_parts[0]}/${path_parts[1]} -name 'cdk.json' -print0)")
+            dirs_to_build+=("$(find $dir -name 'cdk.json' -print0)")
           done
 
           # Remove duplicate directories
