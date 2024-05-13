@@ -75,6 +75,9 @@ jobs:
             fi
           }
           
+          # Export the build_file function for use in parallel
+          export -f build_file
+          
           # Create an array to store directories to be built
           dirs_to_build=()
           
