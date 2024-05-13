@@ -53,4 +53,4 @@ build_project() {
 export -f build_project
 
 # Build projects in parallel
-parallel --keep-order --halt-on-error 1 build_project ::: "$projects"
+parallel -j 1 --keep-order --halt-on-error 1 build_project ::: "$projects"
