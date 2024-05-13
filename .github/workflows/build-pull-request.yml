@@ -56,9 +56,6 @@ jobs:
 
             echo "Build Path $file"
 
-            # Clean the working directory
-            git clean -dfx
-
             # Run the build script for the current language, passing the project directory and extra path
             echo "::group::$file"
             if ../scripts/build-${language}.sh "$file"; then
