@@ -65,12 +65,8 @@ jobs:
             # Clean the working directory
             git clean -dfx
             
-            # Echo the files in the current dir
-            echo "Files in current dir:"
-            ls -la
-            
             # Run the build script for the current language, passing the project directory and extra path
-            if scripts/build-${language}.sh "$file"; then
+            if ../scripts/build-${language}.sh "$file"; then
               echo "- :o: $project_dir" >> $GITHUB_STEP_SUMMARY
             else
               echo "- :x: $project_dir" >> $GITHUB_STEP_SUMMARY
