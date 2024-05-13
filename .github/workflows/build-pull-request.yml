@@ -53,15 +53,13 @@ jobs:
             local file="$1"
             IFS="/" read -ra path_parts <<< "$file"
             language=${path_parts[0]}
-            project_dir=${path_parts[1]}
-            extra_path="${path_parts[@]:2}"
             
             # Skip files that don't belong to the current language
             if [[ $language != ${{ matrix.language }} ]]; then
               return 0
             fi
             
-            echo "Build Path $project_dir"
+            echo "Build Path $file"
             
             # Clean the working directory
             git clean -dfx
