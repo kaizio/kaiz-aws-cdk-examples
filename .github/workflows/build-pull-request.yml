@@ -106,7 +106,7 @@ jobs:
           
           # Run the build_file function in parallel for each directory to be built
           # Halt the execution if any of the build_file invocations fail
-          parallel --halt-on-error --no-notice build_file ::: "${dirs_to_build[@]}"
+          parallel --halt-on-error 2 build_file ::: "${dirs_to_build[@]}"
           
           # End the grouped build output
           echo "::endgroup::"
