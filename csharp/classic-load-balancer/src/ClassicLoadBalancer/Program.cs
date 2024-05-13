@@ -11,7 +11,7 @@ namespace ClassicLoadBalancer
         {
             var app = new App();
 
-            new ClassicLoadBalancerStack(app, "ClassicLoadBalancerStack1");
+            new ClassicLoadBalancerStack(app, "ClassicLoadBalancerStack");
 
             app.Synth();
         }

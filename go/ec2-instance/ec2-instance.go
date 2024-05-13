@@ -18,7 +18,6 @@ type Ec2InstanceStackProps struct {
 
 func NewEc2InstanceStack(scope constructs.Construct, id string, props *Ec2InstanceStackProps) awscdk.Stack {
 	var sprops awscdk.StackProps
-
 	if props != nil {
 		sprops = props.StackProps
 	}
