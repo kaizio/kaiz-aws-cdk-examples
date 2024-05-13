@@ -1,10 +1,7 @@
 #!/bin/bash
 set -euxo pipefail
 scriptdir=$(cd $(dirname $0) && pwd)
-
-# install CDK CLI from npm, so that npx can find it later
-cd $scriptdir/../java
-npm install
+projFile=$1
 
 # Find and build all Maven projects
 for pomFile in $(find $scriptdir/../java -name pom.xml | grep -v node_modules); do
