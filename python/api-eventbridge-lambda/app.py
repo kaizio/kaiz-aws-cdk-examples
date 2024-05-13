@@ -6,6 +6,6 @@ from api_eventbridge_lambda.api_eventbridge_lambda import ApiEventBridgeLambdaSt
 
 
 app = App()
-ApiEventBridgeLambdaStack(app, "ApiEventBridgeLambdaStack")
+ApiEventBridgeLambdaStack(app, "ApiEventBridgeLambdaStack1")
 
 app.synth()
